@@ -54,10 +54,10 @@ export default function Header({
               className="h-14 w-auto"
             />
             <span className="flex flex-col leading-none">
-              <span className="font-display text-lg sm:text-xl text-tinta">
+              <span className="font-display text-xl sm:text-2xl text-tinta">
                 Genitrini <span className="text-terracota">Hnos.</span>
               </span>
-              <span className="text-[10px] uppercase tracking-[0.25em] text-tinta-suave">
+              <span className="text-xs uppercase tracking-[0.25em] text-tinta-suave">
                 Antigüedades de campo
               </span>
             </span>
