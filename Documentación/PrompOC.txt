@@ -1,0 +1,39 @@
+Crea una aplicación web full-stack completa para un catálogo y e-commerce de artículos antiguos, reciclados y de campo (aberturas de madera antigua, cencerros, farolas, elementos de estancias).
+
+### 1. Stack Tecnológico Recomendado:
+- Frontend: Next.js (React), Tailwind CSS, Lucide Icons.
+- Backend / DB: Supabase / PostgreSQL o SQLite con Prisma ORM (para manejo de base de datos, autenticación y almacenamiento de imágenes).
+- Pasarela de Pago: Integración con la API / SDK de Mercado Pago (Checkout Pro / Preferencias).
+
+### 2. Estilo Visual y UI/UX:
+- Temática: Campestre y Colonial refinado.
+- Paleta de Colores: Tonos cálidos/tierra (beige suave de fondo `#FDFBF7`, detalles en terracota/cobre `#8B4513`, verde oliva oscuro `#3B4A3F`, textos en café oscuro/marrón quemado `#2B231D`).
+- Tipografía: Combinación de títulos en Serif clásico (ej. Playfair Display o Merriweather) y cuerpo en Sans-serif accesible (Inter o Roboto).
+- Sensación: Rústica, artesanal, limpia y moderna en uso.
+
+### 3. Estructura y Navegación:
+- **Header:** Logo, menú de navegación (Inicio, Sobre Nosotros, Productos,Contacto) y acceso directo al panel del administrador (login).
+- **Página de Inicio (Home):**
+  - Banner principal campestre con slogan relevante.
+  - Cuadrícula (Grid) destacando "Los más vistos / Artículos destacados".
+  - Footer con dirección física, horarios de atención, teléfono, email y enlace directo a WhatsApp.
+- **Página "Sobre Nosotros":**
+  - Sección narrativa para contar la historia del negocio (rescate de demoliciones, búsqueda en remates de estancias y restauración de patrimonio histórico).
+- **Página de Productos (Catálogo Completo):**
+  - Filtros interactivos en barra lateral o desplegable: Por palabra clave (búsqueda por descripción), por Rubro/Categoría (Aberturas, Iluminación, Campo, Varios), por rango de Precio (Min/Max) y ordenamiento (más vistos, menor/mayor precio).
+  - Tarjetas de producto con foto principal, título, categoría, precio y botón "Añadir al carrito" o "Ver detalle".
+- **Detalle de Producto y Compra:**
+  - Galería con múltiples fotos por artículo, descripción detallada del estado e historia de la pieza, precio claro.
+  - Integración del carrito y flujo de Checkout con Mercado Pago.
+- **Formulario de Contacto:**
+  - Formulario que al completarse arme y abra un mensaje formateado a WhatsApp Web/App.
+- **Botón Flotante de WhatsApp:**
+  - Botón pequeño no invasivo con el ícono de WhatsApp fijado en la **esquina inferior izquierda** que redirija a la página/sección de contacto o inicie un chat.
+
+### 4. Área de Administración (ABM / Panel Interno):
+- Ruta protegida por autenticación (`/admin`).
+- Panel de gestión de productos:
+  - Formulario para cargar nuevo producto: Título, Rubro, Precio, Descripción, Fotos (carga múltiple), Flag de "Destacado".
+  - Tabla de listado de productos con opciones para Editar, Eliminar, Ocultar o Cambiar Stock/Estado.
+
+Por favor, genera la estructura modular de archivos, modelos de datos de DB y el código funcional de cada sección.

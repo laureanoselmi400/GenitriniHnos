@@ -1,0 +1,9 @@
+El negocio que me solicita es una venta de articulos antiguos o reciclados. Como por ejemplo aberturas de madera de casonas, farolas, cencerros, muchas cosas relacionadas con el campo de epoca antigua. El cliente hace demoliciones y obtiene lo que salva de ellas y compra cosas en remates de estancias lo que lleva a tener mucho de estos artículos. 
+El objetivo de la página es poder exponer todos estos artículos con varias fotos, descripción detallada y precio. Que si selecciona un articulo o varios pueda generar una compra online desde la página a travez de mercado pago. Que tenga los siguientes sectores
+Un Abm de carga de artículos, que solo sea visible desde un sector para el cliente, en el que pueda agregar artículos con lo que comentaba anteriormente. 
+otro lugar que indique el inicio a la  página principal. En la página principal, aparte de tener el logo, que se vean todos los menúes y que exponga en una cuadrícula los productos mas visualizados de la pagina. Como pié de página el contacto, la dirección donde se encuentra. 
+Otro menú que sea "sobre nosotros" para poder exponer la historia del cliente.
+Otro que sea productos para que pueda ver todos, filtrar por descripción, por rubro, por importe, etc. 
+Un formulario de contacto que genere un envío de whatsApp y ademas un boton de whatsapp flotante que lleve a ese menú de contacto. éste último que se encuentre en la parte inferior izquierda señalizado con el logo de whatsapp pero que no sea invasivo. 
+El estilo visual que sea simple pero con un aspecto campestre y colonial. 
+Quiero que me brindes dos opciones. La primera un promt para poder ingresar en OpenCode y que me desarrolle la solución y otra opción con el desarrollo que vos harías. 
