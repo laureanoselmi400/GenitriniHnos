@@ -14,7 +14,7 @@ const NAV = [
 ];
 
 export default function Header({
-  phone = "+549 2477 698740",
+  phone = "+549 2477 42-9537/42-9539",
   whatsapp = "5492477698740",
 }: {
   phone?: string;
@@ -48,9 +48,11 @@ export default function Header({
       <div className="border-b border-arena bg-crema/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
           <Link href="/" className="group flex items-center gap-3" aria-label="Inicio">
-            <span className="grid size-11 place-items-center border border-terracota bg-terracota text-crema font-display text-lg leading-none transition-colors group-hover:bg-terracota-osc">
-              GH
-            </span>
+            <img
+              src="/images/logo5.png"
+              alt="Genitrini Hnos."
+              className="h-14 w-auto"
+            />
             <span className="flex flex-col leading-none">
               <span className="font-display text-lg sm:text-xl text-tinta">
                 Genitrini <span className="text-terracota">Hnos.</span>

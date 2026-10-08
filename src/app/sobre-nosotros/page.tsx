@@ -126,7 +126,7 @@ export default function SobreNosotrosPage() {
       </section>
 
       <section className="mx-auto max-w-4xl px-4 py-16 text-center">
-        <h2 className="font-display text-3xl">Venil a conocer el taller</h2>
+        <h2 className="font-display text-3xl">Vení a conocer el taller</h2>
         <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-relaxed text-tinta-suave">
           Las fotos ayudan, pero la madera se entiende tocándola. Estamos abiertos de
           lunes a viernes y los sábados a la mañana. Podés coordinar una visita o
