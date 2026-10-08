@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img">
+  <rect width="800" height="600" fill="#F2E7D6"/>
+  <g opacity="0.10" fill="#8B4513">
+    <circle cx="0" cy="0" r="1"/><circle cx="97" cy="211" r="2"/><circle cx="194" cy="422" r="3"/><circle cx="291" cy="33" r="1"/><circle cx="388" cy="244" r="2"/><circle cx="485" cy="455" r="3"/><circle cx="582" cy="66" r="1"/><circle cx="679" cy="277" r="2"/><circle cx="776" cy="488" r="3"/><circle cx="73" cy="99" r="1"/><circle cx="170" cy="310" r="2"/><circle cx="267" cy="521" r="3"/><circle cx="364" cy="132" r="1"/><circle cx="461" cy="343" r="2"/><circle cx="558" cy="554" r="3"/><circle cx="655" cy="165" r="1"/><circle cx="752" cy="376" r="2"/><circle cx="49" cy="587" r="3"/><circle cx="146" cy="198" r="1"/><circle cx="243" cy="409" r="2"/><circle cx="340" cy="20" r="3"/><circle cx="437" cy="231" r="1"/><circle cx="534" cy="442" r="2"/><circle cx="631" cy="53" r="3"/><circle cx="728" cy="264" r="1"/><circle cx="25" cy="475" r="2"/><circle cx="122" cy="86" r="3"/><circle cx="219" cy="297" r="1"/><circle cx="316" cy="508" r="2"/><circle cx="413" cy="119" r="3"/><circle cx="510" cy="330" r="1"/><circle cx="607" cy="541" r="2"/><circle cx="704" cy="152" r="3"/><circle cx="1" cy="363" r="1"/><circle cx="98" cy="574" r="2"/><circle cx="195" cy="185" r="3"/><circle cx="292" cy="396" r="1"/><circle cx="389" cy="7" r="2"/><circle cx="486" cy="218" r="3"/><circle cx="583" cy="429" r="1"/>
+  </g>
+  <rect x="26" y="26" width="748" height="548" fill="none" stroke="#8B4513" stroke-width="3"/>
+  <rect x="40" y="40" width="720" height="520" fill="none" stroke="#8B4513" stroke-width="1" opacity="0.55"/>
+  <g transform="translate(0 4) rotate(-1.5 400 260)">
+    
+      <g stroke="#8B4513" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="300" y="110" width="200" height="320" rx="3"/>
+        <rect x="322" y="132" width="72" height="120"/>
+        <rect x="406" y="132" width="72" height="120"/>
+        <rect x="322" y="268" width="72" height="140"/>
+        <rect x="406" y="268" width="72" height="140"/>
+        <circle cx="480" cy="278" r="7" fill="#8B4513"/>
+      </g>
+  </g>
+  <text x="400" y="474" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="34" fill="#2B231D">Zaguán con medallón tallado</text>
+  <text x="400" y="514" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="13" letter-spacing="7" fill="#6B5D4F">ABERTURAS · GENITRINI HNOS.</text>
+  <text x="400" y="544" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="12" letter-spacing="3" fill="#6B5D4F">Foto 2</text>
+</svg>

@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+@theme {
+  --color-crema: #fdfbf7;
+  --color-crema-alt: #f6f1e7;
+  --color-arena: #e6dcc8;
+  --color-arena-osc: #d5c7ac;
+  --color-terracota: #8b4513;
+  --color-terracota-osc: #6e3510;
+  --color-terracota-cl: #a9671f;
+  --color-oliva: #3b4a3f;
+  --color-oliva-cl: #5c6f5e;
+  --color-tinta: #2b231d;
+  --color-tinta-suave: #6b5d4f;
+  --color-whatsapp: #1f9d55;
+
+  --font-display: var(--font-playfair), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-crema);
+    color: var(--color-tinta);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    color: var(--color-tinta);
+  }
+
+  ::selection {
+    background-color: #8b4513;
+    color: #fdfbf7;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-terracota);
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  /* Fondo con textura de lino / papel envejecido */
+  .textura-lino {
+    background-image:
+      repeating-linear-gradient(
+        45deg,
+        rgba(139, 69, 19, 0.035) 0px,
+        rgba(139, 69, 19, 0.035) 1px,
+        transparent 1px,
+        transparent 7px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        rgba(59, 74, 63, 0.03) 0px,
+        rgba(59, 74, 63, 0.03) 1px,
+        transparent 1px,
+        transparent 9px
+      );
+  }
+
+  .textura-papel {
+    background-color: var(--color-crema-alt);
+    background-image: radial-gradient(rgba(43, 35, 29, 0.06) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+
+  .borde-dorado {
+    border-color: var(--color-arena-osc);
+  }
+
+  .sombra-rustica {
+    box-shadow:
+      0 1px 2px rgba(43, 35, 29, 0.06),
+      0 12px 28px -18px rgba(43, 35, 29, 0.35);
+  }
+
+  .linea-ornamental {
+    background-image: linear-gradient(
+      to right,
+      transparent,
+      var(--color-arena-osc) 20%,
+      var(--color-terracota) 50%,
+      var(--color-arena-osc) 80%,
+      transparent
+    );
+  }
+}

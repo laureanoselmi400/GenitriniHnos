@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          Int         @id @default(autoincrement())
+  title       String
+  slug        String      @unique
+  category    String
+  price       Float       @default(0)
+  stock       Int         @default(1)
+  condition   String      @default("Usado – buen estado")
+  description String
+  history     String?
+  featured    Boolean     @default(false)
+  visible     Boolean     @default(true)
+  views       Int         @default(0)
+  images      Image[]
+  orderItems  OrderItem[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([category])
+  @@index([visible])
+}
+
+model Image {
+  id        Int     @id @default(autoincrement())
+  url       String
+  alt       String  @default("")
+  position  Int     @default(0)
+  productId Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+}
+
+model Order {
+  id           String      @id @default(cuid())
+  reference    String      @unique
+  buyerName    String
+  buyerEmail   String
+  buyerPhone   String      @default("")
+  buyerMessage String      @default("")
+  status       String      @default("pending")
+  paymentId    String?
+  preferenceId String?
+  subtotal     Float       @default(0)
+  total        Float       @default(0)
+  demo         Boolean     @default(false)
+  items        OrderItem[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId Int?
+  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  title     String
+  price     Float
+  qty       Int
+  image     String?
+
+  @@index([orderId])
+}
+
+model Setting {
+  key   String @id
+  value String
+}
