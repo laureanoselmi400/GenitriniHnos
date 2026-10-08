@@ -14,7 +14,7 @@ const NAV = [
 ];
 
 export default function Header({
-  phone = "+54 02477 15-698740",
+  phone = "+549 2477 698740",
   whatsapp = "5492477698740",
 }: {
   phone?: string;

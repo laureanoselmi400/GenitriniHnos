@@ -4,9 +4,9 @@ import { db } from "@/lib/db";
 export const DEFAULT_SETTINGS: Record<string, string> = {
   site_name: "Genitrini Hnos.",
   slogan: "Rescatamos historias, conservamos oficios",
-  address: "Ruta 11 Km 4,5 – Bodega Vieja, Concordia, Entre Ríos",
-  hours: "Lunes a Viernes de 9 a 12 y de 14 a 18 – Sábados de 9 a 13",
-  phone: "+54 02477 15698740",
+  address: "Av. Arturo Illia 1751 – PErgamino, Buenos Aires",
+  hours: "Lunes a Viernes de 9 a 12 y de 15 a 18 – Sábados de 9 a 13",
+  phone: "+549 2477 42-9537/42-9539",
   email: "contacto@genitrinihnos.com.ar",
   whatsapp: "5492477698740",
   footer_note:
