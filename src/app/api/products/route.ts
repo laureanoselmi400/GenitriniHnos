@@ -50,7 +50,15 @@ function parse(payload: Payload) {
   const depth = parseMeasure(payload.depth);
   const history = (payload.history ?? "").trim();
   const images = Array.isArray(payload.images)
-    ? payload.images.filter((u) => typeof u === "string" && u.startsWith("/"))
+    ? payload.images
+        .filter((u) => typeof u === "string")
+        .map((u) => u.trim())
+        .filter(
+          (u) =>
+            u.startsWith("/") ||
+            u.startsWith("https://res.cloudinary.com/") ||
+            u.startsWith("http://res.cloudinary.com/"),
+        )
     : [];
 
   const errors: string[] = [];
