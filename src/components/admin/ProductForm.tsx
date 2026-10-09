@@ -33,6 +33,16 @@ const CONDICIONES = [
   "Nuevo",
 ];
 
+const MAX_FILE_SIZE = 15 * 1024 * 1024;
+const ALLOWED_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/avif",
+  "image/gif",
+  "image/svg+xml",
+];
+
 type UploadSignature = {
   cloudName: string;
   apiKey: string;
@@ -58,6 +68,15 @@ async function uploadToCloudinary(file: File, sign: UploadSignature): Promise<st
     throw new Error(data?.error?.message || "No se pudo subir la foto a Cloudinary");
   }
   return data.secure_url as string;
+}
+
+async function uploadViaApi(list: File[]): Promise<string[]> {
+  const fd = new FormData();
+  list.forEach((f) => fd.append("files", f));
+  const res = await fetch("/api/upload", { method: "POST", body: fd });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || "No se pudieron subir las fotos");
+  return data.urls as string[];
 }
 
 export default function ProductForm({ initial }: { initial?: ProductFormValues }) {
@@ -96,9 +115,17 @@ export default function ProductForm({ initial }: { initial?: ProductFormValues }
   const uploadFiles = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
     const list = Array.from(files);
-    const tooBig = list.find((f) => f.size > 8 * 1024 * 1024);
+    const tooBig = list.find((f) => f.size > MAX_FILE_SIZE);
     if (tooBig) {
-      setError(`La imagen “${tooBig.name}” supera los 8 MB.`);
+      setError(`La imagen “${tooBig.name}” supera los 15 MB.`);
+      if (fileRef.current) fileRef.current.value = "";
+      return;
+    }
+    const badType = list.find((f) => !ALLOWED_TYPES.includes(f.type));
+    if (badType) {
+      setError(
+        `Formato no soportado: ${badType.name}${badType.type ? ` (${badType.type})` : ""}. Usá JPG, PNG, WEBP, AVIF, GIF o SVG.`,
+      );
       if (fileRef.current) fileRef.current.value = "";
       return;
     }
@@ -111,14 +138,14 @@ export default function ProductForm({ initial }: { initial?: ProductFormValues }
 
       let urls: string[];
       if (signRes.ok && sign.configured) {
-        urls = await Promise.all(list.map((file) => uploadToCloudinary(file, sign)));
+        try {
+          urls = await Promise.all(list.map((file) => uploadToCloudinary(file, sign)));
+        } catch (err) {
+          console.warn("Subida directa fallida, reintento por servidor", err);
+          urls = await uploadViaApi(list);
+        }
       } else {
-        const fd = new FormData();
-        list.forEach((f) => fd.append("files", f));
-        const res = await fetch("/api/upload", { method: "POST", body: fd });
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok) throw new Error(data.error || "No se pudieron subir las fotos");
-        urls = data.urls as string[];
+        urls = await uploadViaApi(list);
       }
       setImages((prev) => [...prev, ...urls]);
     } catch (err) {

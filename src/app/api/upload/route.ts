@@ -15,7 +15,7 @@ const ALLOWED: Record<string, string> = {
   "image/svg+xml": "svg",
 };
 
-const MAX_SIZE = 8 * 1024 * 1024; // 8 MB por archivo
+const MAX_SIZE = 15 * 1024 * 1024; // 15 MB por archivo
 const MAX_FILES = 12;
 
 export async function POST(req: Request) {
