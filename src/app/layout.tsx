@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { inter, playfair } from "@/lib/fonts";
 import { getSettings } from "@/lib/settings";
 import { CartProvider } from "@/components/cart/CartProvider";
+import { QuoteProvider } from "@/components/quote/QuoteProvider";
 import SiteChrome from "@/components/layout/SiteChrome";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -36,13 +37,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="es" className={`${playfair.variable} ${inter.variable}`}>
       <body className="flex min-h-screen flex-col">
         <CartProvider>
-          <SiteChrome
-            header={<Header phone={s.phone} whatsapp={s.whatsapp} />}
-            footer={<Footer />}
-            fab={<WhatsAppFab />}
-          >
-            <main className="flex-1">{children}</main>
-          </SiteChrome>
+          <QuoteProvider>
+            <SiteChrome
+              header={<Header phone={s.phone} whatsapp={s.whatsapp} />}
+              footer={<Footer />}
+              fab={<WhatsAppFab />}
+            >
+              <main className="flex-1">{children}</main>
+            </SiteChrome>
+          </QuoteProvider>
         </CartProvider>
       </body>
     </html>

@@ -1,11 +1,16 @@
-export type CategorySlug = "aberturas" | "iluminacion" | "campo" | "varios";
+export type CategorySlug =
+  | "aberturas"
+  | "iluminacion"
+  | "campo"
+  | "materiales"
+  | "varios";
 
 export type Category = {
   slug: CategorySlug;
   label: string;
   short: string;
   description: string;
-  icon: "door" | "lamp" | "bell" | "key";
+  icon: "door" | "lamp" | "bell" | "layers" | "key";
 };
 
 export const CATEGORIES: Category[] = [
@@ -31,6 +36,13 @@ export const CATEGORIES: Category[] = [
     icon: "bell",
   },
   {
+    slug: "materiales",
+    label: "Materiales",
+    short: "Materiales",
+    description: "Chapas, perfiles, hierro y materiales nuevos para construcción y decoración.",
+    icon: "layers",
+  },
+  {
     slug: "varios",
     label: "Varios",
     short: "Varios",
@@ -46,4 +58,9 @@ export function categoryLabel(slug?: string | null): string {
 
 export function isCategory(value?: string): value is CategorySlug {
   return CATEGORIES.some((c) => c.slug === value);
+}
+
+export function categoryHref(slug: CategorySlug | string): string {
+  const catalog = slug === "materiales" ? "nuevos" : "usados";
+  return `/productos/${catalog}?cat=${slug}`;
 }

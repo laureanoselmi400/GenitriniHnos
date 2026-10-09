@@ -6,12 +6,14 @@ import { useState } from "react";
 import { Eye, EyeOff, Loader2, Pencil, Star, Trash2 } from "lucide-react";
 import { categoryLabel } from "@/lib/categories";
 import { formatPrice } from "@/lib/format";
+import { hasPrice, kindLabel } from "@/lib/types";
 
 type Row = {
   id: number;
   title: string;
   slug: string;
   category: string;
+  kind: string;
   price: number;
   stock: number;
   featured: boolean;
@@ -119,14 +121,33 @@ export default function AdminProductsTable({ products }: { products: Row[] }) {
                       </div>
                       <div className="min-w-0">
                         <p className="truncate font-medium">{row.title}</p>
-                        <p className="text-xs text-tinta-suave">{row.views} vistas</p>
+                        <p className="text-xs text-tinta-suave">
+                          <span
+                            className={`mr-1.5 border px-1.5 py-0.5 text-[9px] uppercase tracking-wider ${
+                              row.kind === "nuevo"
+                                ? "border-oliva text-oliva"
+                                : "border-arena-osc text-tinta-suave"
+                            }`}
+                          >
+                            {kindLabel(row.kind)}
+                          </span>
+                          {row.views} vistas
+                        </p>
                       </div>
                     </div>
                   </td>
                   <td className="px-3 py-3 text-tinta-suave">
                     {categoryLabel(row.category)}
                   </td>
-                  <td className="px-3 py-3 font-semibold">{formatPrice(row.price)}</td>
+                  <td className="px-3 py-3 font-semibold">
+                    {hasPrice(row.price) ? (
+                      formatPrice(row.price)
+                    ) : (
+                      <span className="text-[11px] uppercase tracking-wider text-terracota">
+                        Pedir cotización
+                      </span>
+                    )}
+                  </td>
                   <td className="px-3 py-3">
                     <input
                       type="number"

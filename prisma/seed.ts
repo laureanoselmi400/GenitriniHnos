@@ -119,7 +119,7 @@ const PRODUCTOS: Spec[] = [
     stock: 1,
     condition: "Restaurada",
     description:
-      "Puerta principal de dos hojas en cedro macizo, con paneles originales y herrajes de hierro forjado. Medidas: 1,65 m de ancho x 2,90 m de alto. Rescatada de una casona del centro de Concordia programada para demolición. Restaurada en taller: se reforzó el bastidor, se reposicionaron los goznejas originales y se aplicó aceite natural.",
+      "Puerta principal de dos hojas en cedro macizo, con paneles originales y herrajes de hierro forjado. Medidas: 1,65 m de ancho x 2,90 m de alto. Rescatada de una casona del centro de Pergamino programada para demolición. Restaurada en taller: se reforzó el bastidor, se reposicionaron los goznejas originales y se aplicó aceite natural.",
     history:
       "Perteneció a una casa de familia fundadora del barrio La Picasa, construida a fines del siglo XIX. La familia conservó durante décadas el mismo picaporte de bronce, que viene incluido.",
     featured: true,
@@ -162,7 +162,7 @@ const PRODUCTOS: Spec[] = [
     condition: "Restaurada",
     description:
       "Farola caminera de hierro fundido con pantalla de vidrio esmerilado y mecha original. Altura total: 1,65 m. Funcionaba a kerosene; se puede electrificar sin intervenir la estructura (no incluye cableado). Restaurada: viruta, antioxidante y pintura al horno color verde americano.",
-    history: "Una de las tres farolas que alumbraron el acceso al puerto viejo de Concordia.",
+    history: "Una de las tres farolas que alumbraron el acceso al puerto viejo de Pergamino.",
     featured: true,
     views: 658,
     photos: 3,

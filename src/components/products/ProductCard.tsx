@@ -3,7 +3,7 @@ import { Eye, Star } from "lucide-react";
 import AddToCartButton from "@/components/products/AddToCartButton";
 import { categoryLabel } from "@/lib/categories";
 import { formatPrice } from "@/lib/format";
-import type { ProductCardData } from "@/lib/types";
+import { hasPrice, kindLabel, type ProductCardData } from "@/lib/types";
 
 export default function ProductCard({
   product,
@@ -51,8 +51,17 @@ export default function ProductCard({
       </Link>
 
       <div className="flex flex-1 flex-col p-4">
-        <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-terracota">
+        <span className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.2em] text-terracota">
           {categoryLabel(product.category)}
+          <span
+            className={`border px-1.5 py-0.5 tracking-wider ${
+              product.kind === "nuevo"
+                ? "border-oliva text-oliva"
+                : "border-arena-osc text-tinta-suave"
+            }`}
+          >
+            {kindLabel(product.kind)}
+          </span>
         </span>
 
         <h3 className="mt-1.5 font-display text-lg leading-snug">
@@ -72,9 +81,15 @@ export default function ProductCard({
         )}
 
         <div className="mt-auto flex items-end justify-between gap-3 pt-4">
-          <span className="font-display text-xl text-terracota">
-            {formatPrice(product.price)}
-          </span>
+          {hasPrice(product.price) ? (
+            <span className="font-display text-xl text-terracota">
+              {formatPrice(product.price)}
+            </span>
+          ) : (
+            <span className="text-xs font-semibold uppercase tracking-wider text-terracota">
+              Pedir cotización
+            </span>
+          )}
           <AddToCartButton
             compact
             product={{
@@ -84,6 +99,10 @@ export default function ProductCard({
               price: product.price,
               image: product.images[0]?.url ?? null,
               stock: product.stock,
+              width: product.width,
+              height: product.height,
+              depth: product.depth,
+              material: product.material,
             }}
           />
         </div>

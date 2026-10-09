@@ -50,7 +50,7 @@ export default function SobreNosotrosPage() {
             Casi cinco décadas rescatando lo que otros tiran
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-tinta-suave">
-            Genitrini Hnos. nació de una idea simple: lo antiguo no se bota. Lo que
+            Genitrini Hnos. nació de una idea simple: lo antiguo no se tira. Lo que
             comenzó como un taller de compra-venta de material de demolición, hoy es un
             archivo vivo de la arquitectura y el campo del litoral argentino.
           </p>
@@ -64,7 +64,7 @@ export default function SobreNosotrosPage() {
             <h2 className="font-display text-3xl">La historia</h2>
             <p>
               Todo empezó con un camión y una lista de caseríos. En los años 80
-              recorríamos las construcciones viejas de Concordia y los pueblos
+              recorríamos las construcciones viejas de Pergamino y los pueblos
               vecinos comprando material para reventa: techos de chapa, maderas
               nobles, herrajes. Con el tiempo llegaron las primeras demoliciones por
               encargo, y con ellas la decisión de no llevarse solo lo útil, sino

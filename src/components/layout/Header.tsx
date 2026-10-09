@@ -3,13 +3,25 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { LockKeyhole, Menu, ShoppingBag, X } from "lucide-react";
+import { ChevronDown, ClipboardList, LockKeyhole, Menu, ShoppingBag, X } from "lucide-react";
 import { useCart } from "@/components/cart/CartProvider";
+import { useQuote } from "@/components/quote/QuoteProvider";
 
-const NAV = [
+const NAV: {
+  href: string;
+  label: string;
+  children?: { href: string; label: string }[];
+}[] = [
   { href: "/", label: "Inicio" },
   { href: "/sobre-nosotros", label: "Sobre Nosotros" },
-  { href: "/productos", label: "Productos" },
+  {
+    href: "/productos",
+    label: "Productos",
+    children: [
+      { href: "/productos/nuevos", label: "Nuevos" },
+      { href: "/productos/usados", label: "Usados" },
+    ],
+  },
   { href: "/contacto", label: "Contacto" },
 ];
 
@@ -22,6 +34,7 @@ export default function Header({
 }) {
   const pathname = usePathname();
   const { count } = useCart();
+  const { count: quoteCount } = useQuote();
   const [open, setOpen] = useState(false);
 
   const isActive = (href: string) =>
@@ -64,27 +77,77 @@ export default function Header({
           </Link>
 
           <nav className="hidden items-center gap-1 md:flex">
-            {NAV.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`relative px-3 py-2 text-sm tracking-wide transition-colors ${
-                  isActive(item.href)
-                    ? "text-terracota"
-                    : "text-tinta hover:text-terracota"
-                }`}
-              >
-                {item.label}
-                <span
-                  className={`absolute inset-x-3 -bottom-0.5 h-px bg-terracota transition-transform ${
-                    isActive(item.href) ? "scale-x-100" : "scale-x-0"
+            {NAV.map((item) =>
+              item.children ? (
+                <div key={item.href} className="group relative">
+                  <Link
+                    href={item.href}
+                    className={`relative flex items-center gap-1 px-3 py-2 text-sm tracking-wide transition-colors ${
+                      isActive(item.href)
+                        ? "text-terracota"
+                        : "text-tinta hover:text-terracota"
+                    }`}
+                  >
+                    {item.label}
+                    <ChevronDown className="size-3.5" />
+                    <span
+                      className={`absolute inset-x-3 -bottom-0.5 h-px bg-terracota transition-transform ${
+                        isActive(item.href) ? "scale-x-100" : "scale-x-0"
+                      }`}
+                    />
+                  </Link>
+                  <div className="invisible absolute left-0 top-full z-50 min-w-44 translate-y-1 border border-arena bg-crema p-1 opacity-0 shadow-lg transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+                    {item.children.map((child) => (
+                      <Link
+                        key={child.href}
+                        href={child.href}
+                        className={`block px-3 py-2 text-sm transition-colors ${
+                          pathname.startsWith(child.href)
+                            ? "bg-terracota text-crema"
+                            : "text-tinta hover:bg-crema-alt hover:text-terracota"
+                        }`}
+                      >
+                        {child.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`relative px-3 py-2 text-sm tracking-wide transition-colors ${
+                    isActive(item.href)
+                      ? "text-terracota"
+                      : "text-tinta hover:text-terracota"
                   }`}
-                />
-              </Link>
-            ))}
+                >
+                  {item.label}
+                  <span
+                    className={`absolute inset-x-3 -bottom-0.5 h-px bg-terracota transition-transform ${
+                      isActive(item.href) ? "scale-x-100" : "scale-x-0"
+                    }`}
+                  />
+                </Link>
+              ),
+            )}
           </nav>
 
           <div className="flex items-center gap-1">
+            <Link
+              href="/cotizacion"
+              className="relative grid size-10 place-items-center rounded-full text-tinta transition-colors hover:bg-crema-alt hover:text-terracota"
+              aria-label={`Pedido de cotización, ${quoteCount} ítems`}
+              title="Pedido de cotización"
+            >
+              <ClipboardList className="size-5" />
+              {quoteCount > 0 && (
+                <span className="absolute -right-0.5 -top-0.5 grid min-w-4 place-items-center rounded-full bg-oliva px-1 text-[10px] font-semibold text-crema">
+                  {quoteCount}
+                </span>
+              )}
+            </Link>
+
             <Link
               href="/carrito"
               className="relative grid size-10 place-items-center rounded-full text-tinta transition-colors hover:bg-crema-alt hover:text-terracota"
@@ -122,16 +185,35 @@ export default function Header({
         {open && (
           <nav className="border-t border-arena bg-crema px-4 pb-4 md:hidden">
             {NAV.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className={`block border-b border-arena/70 py-3 text-sm ${
-                  isActive(item.href) ? "text-terracota" : "text-tinta"
-                }`}
-              >
-                {item.label}
-              </Link>
+              <div key={item.href}>
+                <Link
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className={`block border-b border-arena/70 py-3 text-sm ${
+                    isActive(item.href) ? "text-terracota" : "text-tinta"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+                {item.children && (
+                  <div className="flex border-b border-arena/70 pl-4">
+                    {item.children.map((child) => (
+                      <Link
+                        key={child.href}
+                        href={child.href}
+                        onClick={() => setOpen(false)}
+                        className={`py-2.5 pr-5 text-sm ${
+                          pathname.startsWith(child.href)
+                            ? "text-terracota"
+                            : "text-tinta-suave"
+                        }`}
+                      >
+                        {child.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
           </nav>
         )}

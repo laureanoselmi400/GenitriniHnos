@@ -1,24 +1,35 @@
 import Link from "next/link";
-import { ArrowRight, Eye, EyeOff, Package, Plus, Receipt, Star } from "lucide-react";
+import { ArrowRight, ClipboardList, Eye, EyeOff, Package, Plus, Receipt, Star } from "lucide-react";
 import { db } from "@/lib/db";
 import { categoryLabel } from "@/lib/categories";
 import { formatDate, formatPrice } from "@/lib/format";
 import { orderStatusLabel } from "@/lib/mercadopago";
+import { hasPrice } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
-  const [total, publicados, ocultos, destacados, pedidos, pendientes, ultimosPedidos, ultimosProductos] =
-    await Promise.all([
-      db.product.count(),
-      db.product.count({ where: { visible: true } }),
-      db.product.count({ where: { visible: false } }),
-      db.product.count({ where: { featured: true } }),
-      db.order.count(),
-      db.order.count({ where: { status: "pending" } }),
-      db.order.findMany({ orderBy: { createdAt: "desc" }, take: 5, include: { items: true } }),
-      db.product.findMany({ orderBy: { updatedAt: "desc" }, take: 5, include: { images: true } }),
-    ]);
+  const [
+    total,
+    publicados,
+    ocultos,
+    destacados,
+    pedidos,
+    pendientes,
+    cotizaciones,
+    ultimosPedidos,
+    ultimosProductos,
+  ] = await Promise.all([
+    db.product.count(),
+    db.product.count({ where: { visible: true } }),
+    db.product.count({ where: { visible: false } }),
+    db.product.count({ where: { featured: true } }),
+    db.order.count(),
+    db.order.count({ where: { status: "pending" } }),
+    db.quote.count({ where: { status: "pending" } }),
+    db.order.findMany({ orderBy: { createdAt: "desc" }, take: 5, include: { items: true } }),
+    db.product.findMany({ orderBy: { updatedAt: "desc" }, take: 5, include: { images: true } }),
+  ]);
 
   const stats = [
     { label: "Productos", value: total, icon: Package },
@@ -27,6 +38,7 @@ export default async function AdminDashboard() {
     { label: "Destacados", value: destacados, icon: Star },
     { label: "Pedidos", value: pedidos, icon: Receipt },
     { label: "Pendientes", value: pendientes, icon: Receipt },
+    { label: "Cotizaciones", value: cotizaciones, icon: ClipboardList },
   ];
 
   return (
@@ -122,7 +134,8 @@ export default async function AdminDashboard() {
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium">{p.title}</p>
                   <p className="text-xs text-tinta-suave">
-                    {categoryLabel(p.category)} · {formatPrice(p.price)}
+                    {categoryLabel(p.category)} ·{" "}
+                    {hasPrice(p.price) ? formatPrice(p.price) : "A cotizar"}
                   </p>
                 </div>
                 <Link

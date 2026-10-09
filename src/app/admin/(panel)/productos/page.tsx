@@ -36,6 +36,7 @@ export default async function AdminProductosPage() {
             title: p.title,
             slug: p.slug,
             category: p.category,
+            kind: p.kind,
             price: p.price,
             stock: p.stock,
             featured: p.featured,

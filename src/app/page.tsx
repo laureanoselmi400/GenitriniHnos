@@ -1,14 +1,20 @@
 import Link from "next/link";
-import { ArrowRight, Bell, DoorOpen, Gavel, Hammer, KeyRound, Lamp, Paintbrush } from "lucide-react";
+import { ArrowRight, Bell, DoorOpen, Gavel, Hammer, KeyRound, Lamp, Layers, Paintbrush } from "lucide-react";
 import ProductGrid from "@/components/products/ProductGrid";
 import { OrnamentLine, CornerFlourish } from "@/components/ui/Ornament";
-import { CATEGORIES } from "@/lib/categories";
+import { CATEGORIES, categoryHref } from "@/lib/categories";
 import { db } from "@/lib/db";
 import { getSettings } from "@/lib/settings";
 
 export const dynamic = "force-dynamic";
 
-const ICONS = { aberturas: DoorOpen, iluminacion: Lamp, campo: Bell, varios: KeyRound };
+const ICONS = {
+  aberturas: DoorOpen,
+  iluminacion: Lamp,
+  campo: Bell,
+  materiales: Layers,
+  varios: KeyRound,
+};
 
 const PASOS = [
   {
@@ -59,7 +65,7 @@ export default async function HomePage() {
 
         <div className="relative mx-auto max-w-4xl px-6 py-20 text-center sm:py-28">
           <span className="text-xs uppercase tracking-[0.4em] text-terracota">
-            Desde 1978 · Concordia, Entre Ríos
+            Desde 1978 · Pergamino, Buenos Aires
           </span>
           <h1 className="mt-6 font-display text-4xl leading-[1.1] sm:text-6xl">
             Rescatamos historias,
@@ -96,7 +102,7 @@ export default async function HomePage() {
             return (
               <Link
                 key={c.slug}
-                href={`/productos?cat=${c.slug}`}
+                href={categoryHref(c.slug)}
                 className="group border border-arena bg-crema p-6 transition-colors hover:border-terracota hover:bg-crema-alt"
               >
                 <span className="grid size-12 place-items-center border border-arena-osc bg-crema-alt text-terracota transition-colors group-hover:border-terracota group-hover:bg-terracota group-hover:text-crema">

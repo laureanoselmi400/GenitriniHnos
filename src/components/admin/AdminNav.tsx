@@ -2,12 +2,20 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, LogOut, Package, Receipt, Settings } from "lucide-react";
+import {
+  ClipboardList,
+  LayoutDashboard,
+  LogOut,
+  Package,
+  Receipt,
+  Settings,
+} from "lucide-react";
 
 const TABS = [
   { href: "/admin", label: "Resumen", icon: LayoutDashboard },
   { href: "/admin/productos", label: "Productos", icon: Package },
   { href: "/admin/pedidos", label: "Pedidos", icon: Receipt },
+  { href: "/admin/cotizaciones", label: "Cotizaciones", icon: ClipboardList },
   { href: "/admin/configuracion", label: "Configuración", icon: Settings },
 ];
 

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { getSettings } from "@/lib/settings";
-import { CATEGORIES } from "@/lib/categories";
+import { CATEGORIES, categoryHref } from "@/lib/categories";
 
 export default async function Footer() {
   const s = await getSettings();
@@ -87,7 +87,7 @@ export default async function Footer() {
             {CATEGORIES.map((c) => (
               <li key={c.slug}>
                 <Link
-                  href={`/productos?cat=${c.slug}`}
+                  href={categoryHref(c.slug)}
                   className="text-crema/70 hover:text-crema"
                 >
                   {c.label}

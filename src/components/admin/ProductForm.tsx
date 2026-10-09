@@ -10,9 +10,14 @@ export type ProductFormValues = {
   id?: number;
   title: string;
   category: string;
+  kind: string;
   price: number | string;
   stock: number | string;
   condition: string;
+  material: string;
+  width: number | string;
+  height: number | string;
+  depth: number | string;
   description: string;
   history: string;
   featured: boolean;
@@ -25,7 +30,35 @@ const CONDICIONES = [
   "Usado – requiere restauración",
   "Restaurada",
   "En su estado original",
+  "Nuevo",
 ];
+
+type UploadSignature = {
+  cloudName: string;
+  apiKey: string;
+  folder: string;
+  timestamp: number;
+  signature: string;
+};
+
+async function uploadToCloudinary(file: File, sign: UploadSignature): Promise<string> {
+  const fd = new FormData();
+  fd.append("file", file);
+  fd.append("api_key", sign.apiKey);
+  fd.append("timestamp", String(sign.timestamp));
+  fd.append("folder", sign.folder);
+  fd.append("signature", sign.signature);
+
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${sign.cloudName}/image/upload`, {
+    method: "POST",
+    body: fd,
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok || !data.secure_url) {
+    throw new Error(data?.error?.message || "No se pudo subir la foto a Cloudinary");
+  }
+  return data.secure_url as string;
+}
 
 export default function ProductForm({ initial }: { initial?: ProductFormValues }) {
   const router = useRouter();
@@ -36,9 +69,14 @@ export default function ProductForm({ initial }: { initial?: ProductFormValues }
     initial ?? {
       title: "",
       category: CATEGORIES[0].slug,
+      kind: "usado",
       price: "",
       stock: 1,
       condition: CONDICIONES[0],
+      material: "",
+      width: "",
+      height: "",
+      depth: "",
       description: "",
       history: "",
       featured: false,
@@ -57,15 +95,32 @@ export default function ProductForm({ initial }: { initial?: ProductFormValues }
 
   const uploadFiles = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
+    const list = Array.from(files);
+    const tooBig = list.find((f) => f.size > 8 * 1024 * 1024);
+    if (tooBig) {
+      setError(`La imagen “${tooBig.name}” supera los 8 MB.`);
+      if (fileRef.current) fileRef.current.value = "";
+      return;
+    }
+
     setUploading(true);
     setError("");
     try {
-      const fd = new FormData();
-      Array.from(files).forEach((f) => fd.append("files", f));
-      const res = await fetch("/api/upload", { method: "POST", body: fd });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.error || "No se pudieron subir las fotos");
-      setImages((prev) => [...prev, ...(data.urls as string[])]);
+      const signRes = await fetch("/api/upload/sign");
+      const sign = await signRes.json().catch(() => ({}));
+
+      let urls: string[];
+      if (signRes.ok && sign.configured) {
+        urls = await Promise.all(list.map((file) => uploadToCloudinary(file, sign)));
+      } else {
+        const fd = new FormData();
+        list.forEach((f) => fd.append("files", f));
+        const res = await fetch("/api/upload", { method: "POST", body: fd });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || "No se pudieron subir las fotos");
+        urls = data.urls as string[];
+      }
+      setImages((prev) => [...prev, ...urls]);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error al subir imágenes");
     } finally {
@@ -131,6 +186,25 @@ export default function ProductForm({ initial }: { initial?: ProductFormValues }
 
         <div className="grid gap-4 sm:grid-cols-3">
           <div>
+            <label className={labelCls} htmlFor="kind">
+              Condición *
+            </label>
+            <select
+              id="kind"
+              value={form.kind}
+              onChange={(e) => set("kind", e.target.value)}
+              className={inputCls}
+            >
+              <option value="usado">Usado</option>
+              <option value="nuevo">Nuevo</option>
+            </select>
+            <p className="mt-1 text-[11px] text-tinta-suave">
+              {form.kind === "nuevo"
+                ? "Se publica en el catálogo Nuevos."
+                : "Se publica en el catálogo Usados."}
+            </p>
+          </div>
+          <div>
             <label className={labelCls} htmlFor="category">
               Rubro *
             </label>
@@ -148,25 +222,6 @@ export default function ProductForm({ initial }: { initial?: ProductFormValues }
             </select>
           </div>
           <div>
-            <label className={labelCls} htmlFor="price">
-              Precio (ARS) *
-            </label>
-            <input
-              id="price"
-              type="number"
-              min={0}
-              step="1000"
-              required
-              value={form.price}
-              onChange={(e) => set("price", e.target.value)}
-              placeholder="150000"
-              className={inputCls}
-            />
-            <p className="mt-1 text-[11px] text-tinta-suave">
-              {form.price ? `Vista: ${formatPrice(Number(form.price) || 0)}` : "Sin decimales"}
-            </p>
-          </div>
-          <div>
             <label className={labelCls} htmlFor="stock">
               Stock *
             </label>
@@ -179,6 +234,103 @@ export default function ProductForm({ initial }: { initial?: ProductFormValues }
               onChange={(e) => set("stock", e.target.value)}
               className={inputCls}
             />
+          </div>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label className={labelCls} htmlFor="price">
+              Precio (ARS) {form.kind === "usado" ? "*" : "— opcional"}
+            </label>
+            <input
+              id="price"
+              type="number"
+              min={0}
+              step="1000"
+              required={form.kind === "usado"}
+              value={form.price}
+              onChange={(e) => set("price", e.target.value)}
+              placeholder={form.kind === "nuevo" ? "Dejalo vacío para cotizar" : "150000"}
+              className={inputCls}
+            />
+            <p className="mt-1 text-[11px] text-tinta-suave">
+              {form.price
+                ? `Vista: ${formatPrice(Number(form.price) || 0)}`
+                : form.kind === "nuevo"
+                  ? "Sin precio: se mostrará “Pedir cotización”."
+                  : "Sin decimales"}
+            </p>
+          </div>
+          <div>
+            <label className={labelCls} htmlFor="material">
+              Tipo de material
+            </label>
+            <input
+              id="material"
+              list="materiales"
+              value={form.material}
+              onChange={(e) => set("material", e.target.value)}
+              placeholder="Ej.: cedro, hierro, chapa"
+              className={inputCls}
+            />
+            <datalist id="materiales">
+              {["cedro", "pino", "roble", "hierro", "chapa", "bronce", "vidrio", "cerámica"].map(
+                (m) => (
+                  <option key={m} value={m} />
+                ),
+              )}
+            </datalist>
+          </div>
+        </div>
+
+        <div>
+          <p className={labelCls}>Medidas (cm) — opcional</p>
+          <div className="mt-1.5 grid gap-4 sm:grid-cols-3">
+            <div>
+              <label className="text-[11px] text-tinta-suave" htmlFor="width">
+                Ancho
+              </label>
+              <input
+                id="width"
+                type="number"
+                min={0}
+                step="0.1"
+                value={form.width}
+                onChange={(e) => set("width", e.target.value)}
+                placeholder="120"
+                className={inputCls}
+              />
+            </div>
+            <div>
+              <label className="text-[11px] text-tinta-suave" htmlFor="height">
+                Alto
+              </label>
+              <input
+                id="height"
+                type="number"
+                min={0}
+                step="0.1"
+                value={form.height}
+                onChange={(e) => set("height", e.target.value)}
+                placeholder="210"
+                className={inputCls}
+              />
+            </div>
+            <div>
+              <label className="text-[11px] text-tinta-suave" htmlFor="depth">
+                Profundidad
+              </label>
+              <input
+                id="depth"
+                type="number"
+                min={0}
+                step="0.1"
+                value={form.depth}
+                onChange={(e) => set("depth", e.target.value)}
+                placeholder="5"
+                className={inputCls}
+              />
+            </div>
           </div>
         </div>
 

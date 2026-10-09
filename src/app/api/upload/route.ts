@@ -2,6 +2,7 @@ import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth";
+import { cloudinaryEnabled, uploadImage } from "@/lib/cloudinary";
 
 export const dynamic = "force-dynamic";
 
@@ -32,8 +33,11 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: `Máximo ${MAX_FILES} fotos por carga.` }, { status: 400 });
   }
 
+  // En producción las fotos van a Cloudinary. Si no está configurado
+  // (desarrollo local) se guardan en public/uploads como antes.
+  const useCloudinary = cloudinaryEnabled();
   const uploadDir = path.join(process.cwd(), "public", "uploads");
-  await mkdir(uploadDir, { recursive: true });
+  if (!useCloudinary) await mkdir(uploadDir, { recursive: true });
 
   const urls: string[] = [];
 
@@ -54,6 +58,19 @@ export async function POST(req: Request) {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
+
+    if (useCloudinary) {
+      try {
+        urls.push(await uploadImage(buffer, file.type));
+      } catch {
+        return NextResponse.json(
+          { error: "No se pudo subir la foto a Cloudinary." },
+          { status: 502 },
+        );
+      }
+      continue;
+    }
+
     const name = `${Date.now()}-${i}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
     await writeFile(path.join(uploadDir, name), buffer);
     urls.push(`/uploads/${name}`);

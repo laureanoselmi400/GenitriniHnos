@@ -3,9 +3,12 @@
 import { useState } from "react";
 import { Check, ShoppingBag } from "lucide-react";
 import { useCart, type CartItem } from "@/components/cart/CartProvider";
+import QuoteButton from "@/components/quote/QuoteButton";
+import { hasPrice, type ProductCardData } from "@/lib/types";
 
 type Props = {
-  product: Omit<CartItem, "qty">;
+  product: Omit<CartItem, "qty"> &
+    Partial<Pick<ProductCardData, "width" | "height" | "depth" | "material">>;
   qty?: number;
   compact?: boolean;
 };
@@ -14,6 +17,10 @@ export default function AddToCartButton({ product, qty = 1, compact = false }: P
   const { add } = useCart();
   const [done, setDone] = useState(false);
   const agotado = product.stock <= 0;
+
+  if (!hasPrice(product.price)) {
+    return <QuoteButton product={product} qty={qty} compact={compact} />;
+  }
 
   if (agotado) {
     return (
